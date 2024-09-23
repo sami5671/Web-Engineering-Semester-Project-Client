@@ -1,17 +1,27 @@
-import { Link } from "react-router-dom";
-import Logo from "./../ui/Logo/Logo";
+import { Link, useNavigate } from "react-router-dom";
 import Navigation from "../Shared/Navigation";
 import SocialLogin from "../Shared/SocialLogin";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLoginMutation } from "../../Features/auth/authApi";
 import { FaSpinner } from "react-icons/fa";
+import toast from "react-hot-toast";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-  const [login, { data, isLoading, error: responseError }] = useLoginMutation();
+  const [login, { data, isLoading, error: responseError, isSuccess }] =
+    useLoginMutation();
+
+  useEffect(() => {
+    if (responseError) {
+      toast.error(responseError?.data?.message);
+    } else if (isSuccess) {
+      navigate("/");
+    }
+  }, [responseError, isSuccess, navigate]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -20,6 +30,9 @@ const Login = () => {
       email,
       password,
     });
+
+    setEmail("");
+    setPassword("");
   };
 
   return (

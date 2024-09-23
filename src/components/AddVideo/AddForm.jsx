@@ -4,10 +4,12 @@ import TextArea from "./../ui/TextArea";
 import Success from "./../ui/Success";
 import Error from "../ui/Error";
 import { useAddVideoMutation } from "../../Features/admin/videoControlApi";
+import { useNavigate } from "react-router-dom";
 
 const AddForm = () => {
   // =================================================================
   const [addVideo, { isLoading, isSuccess, isError }] = useAddVideoMutation();
+  const navigate = useNavigate();
 
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");

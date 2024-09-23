@@ -1,27 +1,56 @@
 import { MdSatelliteAlt } from "react-icons/md";
 import SocialLogin from "../Shared/SocialLogin";
 import Navigation from "../Shared/Navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRegisterMutation } from "../../Features/auth/authApi";
+import { FaSpinner } from "react-icons/fa";
+import toast from "react-hot-toast";
+import { imageUpload } from "./../../Api/utils";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [uploadButtonText, setUploadButtonText] = useState(
+    "Upload Profile Picture"
+  );
+  const navigate = useNavigate();
 
   // =================================================================
-  const [register, { data, isLoading, error: responseError }] =
+  const [register, { data, isLoading, error: responseError, isSuccess }] =
     useRegisterMutation();
 
-  const handleSubmit = (e) => {
+  useEffect(() => {
+    if (responseError) {
+      toast.error(responseError?.data?.message);
+    } else if (isSuccess) {
+      navigate("/");
+    }
+  }, [responseError, navigate, isSuccess]);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const form = e.target;
+    const image = form.image.files[0];
+    const imageData = await imageUpload(image);
 
     register({
       name,
       email,
       password,
+      image: imageData?.data?.display_url,
       status: "user",
     });
+
+    setName("");
+    setEmail("");
+    setPassword("");
+    setUploadButtonText(uploadButtonText);
+  };
+
+  const handleImageChange = (image) => {
+    setUploadButtonText(image.name);
   };
 
   // =================================================================
@@ -135,7 +164,7 @@ const Register = () => {
                     <div className="flex flex-col w-max mx-auto text-center ">
                       <label>
                         <input
-                          // onChange={(e) => handleImageChange(e.target.files[0])}
+                          onChange={(e) => handleImageChange(e.target.files[0])}
                           className="text-smlg:w-[600px] cursor-pointer hidden"
                           type="file"
                           name="image"
@@ -144,26 +173,25 @@ const Register = () => {
                           hidden
                         />
                         <div className="bg-red-800 hover:animate-pulse text-white border border-gray-300 rounded font-semibold cursor-pointer p-1 px-3 hover:bg-red-700">
-                          {/* {uploadButtonText} */} Upload Image
+                          {uploadButtonText}
                         </div>
                       </label>
                     </div>
                   </div>
                 </div>
                 <div>
-                  {/* <button
-             type="submit"
-             className="bg-red-800 lg:w-[400px] rounded-md py-3 text-white flex items-center justify-center"
-           >
-             <ImSpinner9 className="animate-spin" />
-           </button> */}
-
-                  <button
-                    type="submit"
-                    className="bg-red-600 lg:w-[600px] rounded-md py-3 text-white hover:bg-red-700"
-                  >
-                    Submit
-                  </button>
+                  {isLoading ? (
+                    <button className="bg-red-600 lg:w-[600px] rounded-md py-3 text-white hover:bg-red-700">
+                      <FaSpinner className="animate-spin" />
+                    </button>
+                  ) : (
+                    <button
+                      type="submit"
+                      className="bg-red-600 lg:w-[600px] rounded-md py-3 text-white hover:bg-red-700"
+                    >
+                      submit
+                    </button>
+                  )}
                 </div>
               </form>
               {/* ....................... */}

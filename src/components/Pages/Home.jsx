@@ -1,7 +1,20 @@
+import { useEffect } from "react";
 import Navigation from "../Shared/Navigation";
 import Videos from "../videos/Videos";
+import { userLoggedIn } from "../../Features/auth/authSlice";
+import { useDispatch } from "react-redux";
 
 const Home = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (localStorage.length > 0) {
+      const user = localStorage.getItem("auth");
+      if (user) {
+        dispatch(userLoggedIn(JSON.parse(user)));
+      }
+    }
+  }, [dispatch]);
   return (
     <>
       <Navigation />
