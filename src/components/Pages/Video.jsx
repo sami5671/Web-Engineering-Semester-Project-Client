@@ -8,6 +8,9 @@ import RelatedVideos from "../video/related/RelatedVideos";
 import RelatedVideoLoader from "../ui/loaders/RelatedVideoLoader";
 import Navigation from "../Shared/Navigation";
 import { useGetVideoQuery } from "../../Features/videos/videosApi";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { userLoggedIn } from "../../Features/auth/authSlice";
 
 const Video = () => {
   const { videoId } = useParams();
@@ -35,6 +38,16 @@ const Video = () => {
       </>
     );
   }
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (localStorage.length > 0) {
+      const user = localStorage.getItem("auth");
+      if (user) {
+        dispatch(userLoggedIn(JSON.parse(user)));
+      }
+    }
+  }, [dispatch]);
   return (
     <>
       <Navigation />

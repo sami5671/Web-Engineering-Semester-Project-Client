@@ -1,4 +1,3 @@
-import React from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -34,7 +33,7 @@ const NavigationModal = ({ open, close }) => {
         </Transition.Child>
 
         <div className="fixed inset-0 overflow-y-auto">
-          <div className="flex min-h-full items-center justify-center p-4 text-center">
+          <div className="flex min-h-full items-center justify-center lg:justify-end lg:-mt-[135px] pr-2 text-center">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"

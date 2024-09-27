@@ -42,6 +42,8 @@ const AddForm = () => {
       date,
       duration,
       views,
+      likeEmail: [],
+      dislikeEmail: [],
     });
     resetForm();
   };
