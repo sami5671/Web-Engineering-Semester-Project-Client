@@ -51,7 +51,7 @@ const Navigation = () => {
                   />
                 </div>
                 <div>
-                  <Link>
+                  <Link to="/saveVideo">
                     <MdOutlineFavorite className="text-2xl text-slate-500  hover:text-black" />
                   </Link>
                 </div>

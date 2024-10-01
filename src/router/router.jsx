@@ -5,6 +5,7 @@ import Add from "../components/Pages/Add";
 import Edit from "../components/Pages/Edit";
 import Login from "../components/Pages/Login";
 import Register from "../components/Pages/Register";
+import UserSaveVideo from "../components/Pages/UserSaveVideo";
 
 const router = createBrowserRouter([
   {
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
   {
     path: "/editVideo/:videoId",
     element: <Edit />,
+  },
+  {
+    path: "/saveVideo",
+    element: <UserSaveVideo />,
   },
 ]);
 

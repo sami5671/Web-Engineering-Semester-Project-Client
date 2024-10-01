@@ -4,7 +4,7 @@ export const likeDislikeApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     likeVideo: builder.mutation({
       query: ({ email, _id }) => ({
-        url: `/likeVideoApi/${_id}`,
+        url: `/user/likeVideoApi/${_id}`,
         method: "PATCH",
         body: { email },
       }),
@@ -16,7 +16,7 @@ export const likeDislikeApi = apiSlice.injectEndpoints({
     }),
     disLikeVideo: builder.mutation({
       query: ({ email, _id }) => ({
-        url: `/dislikeVideoApi/${_id}`,
+        url: `/user/dislikeVideoApi/${_id}`,
         method: "PATCH",
         body: { email },
       }),

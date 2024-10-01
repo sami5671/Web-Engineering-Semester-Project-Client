@@ -16,6 +16,7 @@ import {
   useLikeVideoMutation,
 } from "../../Features/LikeDislike/LikeDislikeApi";
 import { MdOutlineFavorite } from "react-icons/md";
+import { useSaveUserVideoMutation } from "../../Features/saveVideo/saveVideoApi";
 
 const Description = ({ video }) => {
   const navigate = useNavigate();
@@ -40,6 +41,14 @@ const Description = ({ video }) => {
     },
   ] = useDisLikeVideoMutation();
 
+  const [
+    saveUserVideo,
+    {
+      isLoading: saveVideoLoading,
+      isSuccess: saveVideoSuccess,
+      error: saveVideoError,
+    },
+  ] = useSaveUserVideoMutation();
   // ----------------------------------------------------------------
   const isLikedByMe = likeEmail?.includes(email);
   const isdisLikedByMe = dislikeEmail?.includes(email);
@@ -57,12 +66,12 @@ const Description = ({ video }) => {
     likeVideo({ email, _id });
   };
   const handleDisLike = () => {
-    console.log(email, _id);
+    // console.log(email, _id);
     disLikeVideo({ email, _id });
   };
-
   const handleSaveVideo = () => {
-    console.log(email, _id);
+    // console.log(email, _id);
+    saveUserVideo({ _id, email });
   };
 
   // for like
@@ -82,6 +91,15 @@ const Description = ({ video }) => {
       toast.error(disLikeError?.data?.message);
     }
   }, [disLikeError, disLikeSuccess]);
+
+  // for save video
+  useEffect(() => {
+    if (saveVideoSuccess) {
+      toast.success("Video successfully Saved");
+    } else if (saveVideoError) {
+      toast.error(saveVideoError?.data?.message);
+    }
+  }, [saveVideoSuccess, saveVideoError]);
 
   // delete video
   useEffect(() => {
@@ -104,7 +122,12 @@ const Description = ({ video }) => {
               className="hover:text-red-500 font-semibold border-2 rounded-full px-2"
             >
               <span className="flex items-center lg:text-[16px] gap-1">
-                Save <MdOutlineFavorite className="mt-1 " />
+                Save
+                {saveVideoLoading ? (
+                  <ImSpinner className="text-green-800 font-bold text-xl" />
+                ) : (
+                  <MdOutlineFavorite className="mt-1 " />
+                )}
               </span>
             </button>
           </div>
@@ -145,7 +168,7 @@ const Description = ({ video }) => {
             <>
               <div className="flex gap-1 items-centers">
                 {isLikedByMe === true ? (
-                  <div className="shrink-0">
+                  <div onClick={handleLike} className="shrink-0">
                     <Link className="flex items-center gap-1">
                       <img
                         className="w-5 block"

@@ -4,7 +4,7 @@ export const videoControlApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     addVideo: builder.mutation({
       query: (data) => ({
-        url: "/videos",
+        url: "/videos/addVideo",
         method: "POST",
         body: data,
       }),
@@ -12,7 +12,7 @@ export const videoControlApi = apiSlice.injectEndpoints({
     }),
     editVideo: builder.mutation({
       query: ({ videoId, data }) => ({
-        url: `/editVideo/${videoId}`,
+        url: `/videos/editVideo/${videoId}`,
         method: "PATCH",
         body: data,
       }),
@@ -24,7 +24,7 @@ export const videoControlApi = apiSlice.injectEndpoints({
     }),
     deleteVideo: builder.mutation({
       query: (id) => ({
-        url: `/videos/${id}`,
+        url: `/videos/deleteVideo/${id}`,
         method: "DELETE",
       }),
       invalidatesTags: ["Videos"],
