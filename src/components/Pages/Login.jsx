@@ -1,10 +1,14 @@
 import { Link, useNavigate } from "react-router-dom";
-import Navigation from "../Shared/Navigation";
 import SocialLogin from "../Shared/SocialLogin";
 import { useEffect, useState } from "react";
 import { useLoginMutation } from "../../Features/auth/authApi";
 import { FaSpinner } from "react-icons/fa";
 import toast from "react-hot-toast";
+import Logo from "./../ui/Logo/Logo";
+import { Form, Formik } from "formik";
+import InputField from "../Formik/InputField";
+import InputPassword from "../Formik/InputPassword";
+import * as Yup from "yup";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -15,6 +19,18 @@ const Login = () => {
   const [login, { data, isLoading, error: responseError, isSuccess }] =
     useLoginMutation();
 
+  // ----------------------------------------------------------------
+  const initialValues = {
+    email: "",
+    password: "",
+  };
+
+  const loginSchema = Yup.object().shape({
+    email: Yup.string().required("Required!").email("Invalid Email!"),
+    password: Yup.string().required("Required!"),
+  });
+  // ----------------------------------------------------------------
+
   useEffect(() => {
     if (responseError) {
       toast.error(responseError?.data?.message);
@@ -23,12 +39,10 @@ const Login = () => {
     }
   }, [responseError, isSuccess, navigate]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
+  const handleSubmit = (values) => {
     login({
-      email,
-      password,
+      email: values.email,
+      password: values.password,
     });
 
     setEmail("");
@@ -37,86 +51,64 @@ const Login = () => {
 
   return (
     <>
-      <Navigation />
-      <div className="flex items-center justify-center mt-2">
+      <div className="flex items-center justify-center mt-2 bg-slate-800 h-auto">
         <div className="flex flex-col w-1/2 rounded-md sm:p-10 text-gray-900">
           <div className="mt-6">
             {/* == */}
-            <div className="mb-3">
-              <h1 className="my-3 text-4xl font-bold text-red-600">Sign In</h1>
+            <div className="mb-3 flex items-center justify-center">
+              <h1 className="my-3 text-4xl font-bold text-white">
+                <Logo />
+              </h1>
             </div>
             {/* == */}
             <p className="text-sm text-gray-500">
               Sign in to access your account
             </p>
           </div>
-          <form
-            onSubmit={handleSubmit}
-            noValidate=""
-            action=""
-            className="space-y-6 ng-untouched ng-pristine ng-valid"
-          >
-            <div className="space-y-2 mt-4">
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block mb-2 text-sm text-white"
-                >
-                  Email address
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  placeholder="📩 Enter Your Email Here"
-                  className="w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-red-500 bg-gray-200 text-gray-900"
-                  data-temp-mail-org="0"
-                />
-              </div>
-              <div>
-                <div className="flex justify-between">
-                  <label
-                    htmlFor="password"
-                    className="text-sm mb-2 mt-2 text-white"
-                  >
-                    Password
-                  </label>
-                </div>
-                <input
-                  type="password"
-                  name="password"
-                  autoComplete="current-password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  placeholder="🔐 Password"
-                  className="w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-red-500 bg-gray-200 text-gray-900"
-                />
-              </div>
-            </div>
 
-            <div>
-              {isLoading ? (
-                <button className="bg-red-600 font-semibold text-xl w-full rounded-md py-3 text-white hover:bg-red-700">
-                  <FaSpinner className="animate-spin" />
-                </button>
-              ) : (
-                <button
-                  type="submit"
-                  className="bg-red-600 font-semibold text-xl w-full rounded-md py-3 text-white hover:bg-red-700"
-                >
-                  Login
-                </button>
-              )}
-            </div>
-          </form>
-          <div className="space-y-1">
-            <button className="text-xs hover:underline hover:text-rose-500 text-gray-400">
-              Forgot password?
-            </button>
-          </div>
+          <Formik
+            initialValues={initialValues}
+            validationSchema={loginSchema}
+            onSubmit={handleSubmit}
+          >
+            {() => {
+              return (
+                <Form className="space-y-5">
+                  <InputField
+                    name="email"
+                    label="Email"
+                    placeholder="samialam5671@email.com"
+                  />
+
+                  <InputPassword
+                    name="password"
+                    label="Password"
+                    placeholder="******"
+                  />
+
+                  <p className="text-end text-xs font-semibold text-white">
+                    Fields marked with <span className="text-red-600">*</span>{" "}
+                    are mandatory!
+                  </p>
+
+                  <div>
+                    {isLoading ? (
+                      <button className="bg-red-600 flex justify-center font-semibold text-xl w-full rounded-md py-3 text-white hover:bg-red-700">
+                        <FaSpinner className="animate-spin" />
+                      </button>
+                    ) : (
+                      <button
+                        type="submit"
+                        className="bg-red-600 font-semibold text-xl w-full rounded-md py-3 text-white hover:bg-red-700"
+                      >
+                        Login
+                      </button>
+                    )}
+                  </div>
+                </Form>
+              );
+            }}
+          </Formik>
           {/*  */}
           {/* ====social login */}
           <div className="flex items-center pt-4 space-x-1">
@@ -128,12 +120,11 @@ const Login = () => {
           </div>
 
           <SocialLogin />
-          <p className="px-6 text-sm text-center text-gray-800">
+          <p className="px-6 text-sm text-center text-slate-300">
             Don&apos;t have an account yet?
             <Link
               to="/register"
-              //   onClick={closeLoginModal}
-              className="hover:underline hover:text-red-500 text-gray-500"
+              className="hover:underline hover:text-red-500 text-red-400"
             >
               Sign up
             </Link>
