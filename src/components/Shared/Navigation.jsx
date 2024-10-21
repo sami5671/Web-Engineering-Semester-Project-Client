@@ -3,9 +3,10 @@ import Logo from "../ui/Logo/Logo";
 import avatar from "../../assets/userAvater.gif";
 import { useSelector } from "react-redux";
 import useAuth from "../../Hooks/useAuth";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NavigationModal from "../ui/modal/NavigationModal";
 import { MdAdminPanelSettings, MdOutlineFavorite } from "react-icons/md";
+import { useGetUserSaveVideoQuery } from "../../Features/saveVideo/saveVideoApi";
 
 const Navigation = () => {
   const [open, setOpen] = useState(false);
@@ -13,6 +14,14 @@ const Navigation = () => {
 
   const checkUser = useAuth();
   const { email, image, status } = user || {};
+
+  const {
+    data: videos,
+    isLoading,
+    isSuccess,
+    error,
+    isError,
+  } = useGetUserSaveVideoQuery(email);
 
   // modal logout
   const handleOpen = () => setOpen(true);
@@ -51,9 +60,24 @@ const Navigation = () => {
                   />
                 </div>
                 <div>
+                  {/* for video save */}
                   <Link to="/saveVideo">
-                    <MdOutlineFavorite className="text-2xl text-slate-500  hover:text-black" />
+                    <div className="">
+                      <span className="text-white">
+                        <MdOutlineFavorite className="text-xl lg:text-3xl cursor-pointer text-red-500" />
+                      </span>
+                      {videos?.length > 0 ? (
+                        <div className="absolute">
+                          <span className="flex flex-col justify-center items-center font-semibold px-2 -mt-[30px] lg:-mt-[36px] ml-3 lg:ml-6 bg-white text-red-800 rounded-full">
+                            {videos?.length}
+                          </span>
+                        </div>
+                      ) : (
+                        " "
+                      )}
+                    </div>
                   </Link>
+                  {/* for video save */}
                 </div>
               </div>
             ) : (
