@@ -6,6 +6,7 @@ import Edit from "../components/Pages/Edit";
 import Login from "../components/Pages/Login";
 import Register from "../components/Pages/Register";
 import UserSaveVideo from "../components/Pages/UserSaveVideo";
+import UploadVideo from "../components/AddVideo/UploadVideo";
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
   {
     path: "/addVideo",
     element: <Add />,
+  },
+  {
+    path: "/uploadVideo",
+    element: <UploadVideo />,
   },
   {
     path: "/editVideo/:videoId",
