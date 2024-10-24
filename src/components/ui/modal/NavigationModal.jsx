@@ -2,6 +2,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { userLoggedOut } from "../../../Features/auth/authSlice";
+import { Link } from "react-router-dom";
 
 const NavigationModal = ({ open, close }) => {
   // =================================================================
@@ -81,6 +82,16 @@ const NavigationModal = ({ open, close }) => {
                     Cancel
                   </button>
                 </div>
+
+                {/* --------- */}
+                <Link to="/userAccess">
+                  <div className="mt-12 flex justify-center bg-fuchsia-800 px-6 py-2 rounded-xl hover:bg-fuchsia-950">
+                    <button className=" text-white font-semibold">
+                      Requested Users
+                    </button>
+                  </div>
+                </Link>
+                {/* ---------- */}
               </Dialog.Panel>
             </Transition.Child>
           </div>

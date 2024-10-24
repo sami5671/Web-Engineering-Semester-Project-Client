@@ -13,13 +13,6 @@ const AddVideo = () => {
             Please fillup the form to add new video
           </p>
         </div>
-        <div className="flex justify-end -mt-12 mb-12">
-          <Link to="/uploadVideo">
-            <button className="bg-red-500 px-6 py-2 text-white rounded-lg">
-              Upload Your Video
-            </button>
-          </Link>
-        </div>
         <div className="mt-5 md:mt-0 md:col-span-2">
           <AddForm />
         </div>

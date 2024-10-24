@@ -5,6 +5,7 @@ import { FaSpinner } from "react-icons/fa";
 import axios from "axios";
 import Navigation from "../Shared/Navigation";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const UploadVideo = () => {
   const user = useSelector((state) => state.auth.user);
@@ -97,6 +98,13 @@ const UploadVideo = () => {
     <>
       <Navigation />
       <div className="max-w-7xl mx-auto px-5 lg:px-0 mt-12">
+        <div className="flex justify-end mb-6">
+          <Link to="/addVideo">
+            <button className="bg-red-500 px-6 py-2 text-white rounded-lg">
+              Upload Your YouTube Video
+            </button>
+          </Link>
+        </div>
         <form onSubmit={handleSubmit} method="POST">
           <div className="shadow-lg overflow-hidden rounded-lg bg-white">
             <div className="px-8 py-10">

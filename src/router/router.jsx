@@ -7,6 +7,7 @@ import Login from "../components/Pages/Login";
 import Register from "../components/Pages/Register";
 import UserSaveVideo from "../components/Pages/UserSaveVideo";
 import UploadVideo from "../components/AddVideo/UploadVideo";
+import UserAccessRequestList from "../components/Pages/UserAccessRequestList";
 
 const router = createBrowserRouter([
   {
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
   {
     path: "/saveVideo",
     element: <UserSaveVideo />,
+  },
+  {
+    path: "/userAccess",
+    element: <UserAccessRequestList />,
   },
 ]);
 

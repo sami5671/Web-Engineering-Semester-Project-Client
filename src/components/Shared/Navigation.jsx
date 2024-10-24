@@ -7,13 +7,14 @@ import { useState } from "react";
 import NavigationModal from "../ui/modal/NavigationModal";
 import { MdAdminPanelSettings, MdOutlineFavorite } from "react-icons/md";
 import { useGetUserSaveVideoQuery } from "../../Features/saveVideo/saveVideoApi";
+import { useSendRequestMutation } from "../../Features/users/usersApi";
 
 const Navigation = () => {
   const [open, setOpen] = useState(false);
   const user = useSelector((state) => state.auth.user);
 
   const checkUser = useAuth();
-  const { email, image, status } = user || {};
+  const { email, image, status, request } = user || {};
 
   const {
     data: videos,
@@ -23,10 +24,23 @@ const Navigation = () => {
     isError,
   } = useGetUserSaveVideoQuery(email);
 
+  const [
+    sendRequest,
+    {
+      isSuccess: requestSuccess,
+      isLoading: requestLoading,
+      error: requestError,
+    },
+  ] = useSendRequestMutation();
+
   // modal logout
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const handleRequestSendForVideo = () => {
+    sendRequest({ email });
+    // console.log(email);
+  };
   return (
     <>
       <nav className="bg-slate-100 shadow-md">
@@ -37,19 +51,24 @@ const Navigation = () => {
           <div className="flex items-center gap-4">
             {status === "admin" ? (
               <Link
-                to="/addVideo"
+                to="/uploadVideo"
                 className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-500 hover:bg-red-800 focus:outline-none focus:ring-0 focus:ring-offset-0 focus:ring-indigo-500"
               >
                 + Add Video
               </Link>
             ) : status === "user" ? (
-              <button className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-black hover:bg-red-950 focus:outline-none focus:ring-0 focus:ring-offset-0 focus:ring-indigo-500">
-                <Link to="/uploadVideo">
-                  <span className="flex items-center gap-2">
-                    Upload Your Video
-                    <MdAdminPanelSettings className="text-xl" />
-                  </span>
-                </Link>
+              <button
+                onClick={handleRequestSendForVideo}
+                className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-black hover:bg-red-950 focus:outline-none focus:ring-0 focus:ring-offset-0 focus:ring-indigo-500"
+              >
+                <span className="flex items-center gap-2">
+                  {request === "pending" ? (
+                    <span>Pending....</span>
+                  ) : (
+                    "Request For Upload Video"
+                  )}
+                  <MdAdminPanelSettings className="text-xl" />
+                </span>
               </button>
             ) : (
               ""
