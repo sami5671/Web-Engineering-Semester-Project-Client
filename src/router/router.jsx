@@ -8,6 +8,8 @@ import Register from "../components/Pages/Register";
 import UserSaveVideo from "../components/Pages/UserSaveVideo";
 import UploadVideo from "../components/AddVideo/UploadVideo";
 import UserAccessRequestList from "../components/Pages/UserAccessRequestList";
+import AdminRoute from "./AdminRoute";
+import ModeratorRoute from "./ModeratorRoute";
 
 const router = createBrowserRouter([
   {
@@ -28,15 +30,27 @@ const router = createBrowserRouter([
   },
   {
     path: "/addVideo",
-    element: <Add />,
+    element: (
+      <ModeratorRoute>
+        <Add />
+      </ModeratorRoute>
+    ),
   },
   {
     path: "/uploadVideo",
-    element: <UploadVideo />,
+    element: (
+      <ModeratorRoute>
+        <UploadVideo />
+      </ModeratorRoute>
+    ),
   },
   {
     path: "/editVideo/:videoId",
-    element: <Edit />,
+    element: (
+      <ModeratorRoute>
+        <Edit />
+      </ModeratorRoute>
+    ),
   },
   {
     path: "/saveVideo",
@@ -44,7 +58,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/userAccess",
-    element: <UserAccessRequestList />,
+    element: (
+      <AdminRoute>
+        <UserAccessRequestList />
+      </AdminRoute>
+    ),
   },
 ]);
 

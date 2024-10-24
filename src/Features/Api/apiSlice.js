@@ -22,6 +22,12 @@ export const apiSlice = createApi({
     }
     return result;
   },
-  tagTypes: ["Videos", "Video", "RelatedVideos", "SavedUsersVideos"],
+  tagTypes: [
+    "Videos",
+    "Video",
+    "RelatedVideos",
+    "SavedUsersVideos",
+    "usersAccessRequest",
+  ],
   endpoints: (builder) => ({}),
 });

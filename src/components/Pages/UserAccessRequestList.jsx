@@ -1,13 +1,25 @@
-import { useGetUsersQuery } from "../../Features/admin/userAccessRequestApi";
+import {
+  useGetUsersQuery,
+  useGiveAccessUserMutation,
+} from "../../Features/admin/userAccessRequestApi";
 import Navigation from "../Shared/Navigation";
 
 const UserAccessRequestList = () => {
   const { data: users, isLoading, isError } = useGetUsersQuery();
+  const [
+    giveAccessUser,
+    {
+      isSuccess: giveAccessSuccess,
+      isLoading: giveAccessLoading,
+      error: giveAccessError,
+      refetch,
+    },
+  ] = useGiveAccessUserMutation();
 
   const handleGrantAccess = (userId) => {
     // Function to handle granting moderation access
     console.log(`Granting moderation access to user with ID: ${userId}`);
-    // Implement your logic here, e.g., making a request to update the user's status
+    giveAccessUser({ userId });
   };
 
   if (isLoading) return <p>Loading...</p>;
@@ -53,7 +65,9 @@ const UserAccessRequestList = () => {
                           onClick={() => handleGrantAccess(user._id)}
                           className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
                         >
-                          Grant Moderator Access
+                          {giveAccessLoading
+                            ? "Granting..."
+                            : "Grant Moderator Access"}
                         </button>
                       )}
                     </td>

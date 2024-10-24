@@ -11,6 +11,7 @@ import { useSendRequestMutation } from "../../Features/users/usersApi";
 
 const Navigation = () => {
   const [open, setOpen] = useState(false);
+  const [requestSend, setRequestSend] = useState("Request For Upload Video");
   const user = useSelector((state) => state.auth.user);
 
   const checkUser = useAuth();
@@ -39,7 +40,7 @@ const Navigation = () => {
 
   const handleRequestSendForVideo = () => {
     sendRequest({ email });
-    // console.log(email);
+    setRequestSend("Pending");
   };
   return (
     <>
@@ -56,6 +57,13 @@ const Navigation = () => {
               >
                 + Add Video
               </Link>
+            ) : status === "moderator" ? (
+              <Link
+                to="/uploadVideo"
+                className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-500 hover:bg-red-800 focus:outline-none focus:ring-0 focus:ring-offset-0 focus:ring-indigo-500"
+              >
+                + Add Video
+              </Link>
             ) : status === "user" ? (
               <button
                 onClick={handleRequestSendForVideo}
@@ -65,7 +73,7 @@ const Navigation = () => {
                   {request === "pending" ? (
                     <span>Pending....</span>
                   ) : (
-                    "Request For Upload Video"
+                    <span>{requestSend || "Request For Upload Video"}</span>
                   )}
                   <MdAdminPanelSettings className="text-xl" />
                 </span>

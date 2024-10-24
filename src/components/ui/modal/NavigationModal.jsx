@@ -9,7 +9,7 @@ const NavigationModal = ({ open, close }) => {
 
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
-  const { name, email, image } = user || {};
+  const { name, email, image, status } = user || {};
 
   const handleLogOut = () => {
     dispatch(userLoggedOut());
@@ -84,13 +84,17 @@ const NavigationModal = ({ open, close }) => {
                 </div>
 
                 {/* --------- */}
-                <Link to="/userAccess">
-                  <div className="mt-12 flex justify-center bg-fuchsia-800 px-6 py-2 rounded-xl hover:bg-fuchsia-950">
-                    <button className=" text-white font-semibold">
-                      Requested Users
-                    </button>
-                  </div>
-                </Link>
+                {status === "admin" ? (
+                  <Link to="/userAccess">
+                    <div className="mt-12 flex justify-center bg-fuchsia-800 px-6 py-2 rounded-xl hover:bg-fuchsia-950">
+                      <button className=" text-white font-semibold">
+                        Requested Users
+                      </button>
+                    </div>
+                  </Link>
+                ) : (
+                  ""
+                )}
                 {/* ---------- */}
               </Dialog.Panel>
             </Transition.Child>
