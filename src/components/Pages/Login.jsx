@@ -51,7 +51,7 @@ const Login = () => {
 
   return (
     <>
-      <div className="flex items-center justify-center mt-2 bg-slate-800 h-auto">
+      <div className="flex items-center justify-center mt-2 bg-slate-800 h-svh">
         <div className="flex flex-col w-1/2 rounded-md sm:p-10 text-gray-900">
           <div className="mt-6">
             {/* == */}
