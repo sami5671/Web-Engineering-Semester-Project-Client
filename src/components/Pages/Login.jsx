@@ -77,13 +77,13 @@ const Login = () => {
                   <InputField
                     name="email"
                     label="Email"
-                    placeholder="samialam5671@email.com"
+                    placeholder="ADMIN: samialam5671@email.com"
                   />
 
                   <InputPassword
                     name="password"
                     label="Password"
-                    placeholder="******"
+                    placeholder="PASSWORD: 123456"
                   />
 
                   <p className="text-end text-xs font-semibold text-white">

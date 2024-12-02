@@ -6,6 +6,7 @@ import axios from "axios";
 import Navigation from "../Shared/Navigation";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const UploadVideo = () => {
   const user = useSelector((state) => state.auth.user);
@@ -83,7 +84,7 @@ const UploadVideo = () => {
     console.log(data);
 
     const result = await axios.post(
-      "http://localhost:9000/videos/addVideo",
+      `${import.meta.env.VITE_APP_API_URL}/videos/addVideo`,
       data
     );
 
@@ -91,6 +92,7 @@ const UploadVideo = () => {
     resetForm();
 
     console.log("uploaded successfully!!");
+    toast.success("Video Uploaded Successfully");
     setLoading(false);
   };
 
@@ -178,6 +180,12 @@ const UploadVideo = () => {
                           Upload Image file here
                         </span>
                       </label>
+                      {/* Display the file path */}
+                      {img && (
+                        <span className="mt-4 text-sm text-gray-500">
+                          Selected file: {img.name}
+                        </span>
+                      )}
                     </div>
                     <div className="text-center mt-2">
                       <label
@@ -227,6 +235,12 @@ const UploadVideo = () => {
                           Upload Video file here
                         </span>
                       </label>
+                      {/* Display the file path */}
+                      {video && (
+                        <span className="mt-4 text-sm text-gray-500">
+                          Selected file: {video.name}
+                        </span>
+                      )}
                     </div>
                     <div className="text-center mt-2">
                       <label

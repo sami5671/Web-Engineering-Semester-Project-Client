@@ -79,7 +79,7 @@ const EditForm = ({ video }) => {
 
             <div className="col-span-6">
               <TextInput
-                title="YouTube Video link"
+                title="Video link"
                 value={link}
                 onChange={(e) => setLink(e.target.value)}
               />
